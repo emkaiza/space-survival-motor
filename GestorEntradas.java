@@ -7,6 +7,29 @@ public class GestorEntradas {
         System.out.println("Movimiento: jugador a (" + nuevaX + ", " + nuevaY + ")");
     }
 
+    public void moverJugador(Jugador jugador, String direccion) {
+        if (direccion == null) return;
+        int dx = 0, dy = 0;
+        switch (direccion.toUpperCase()) {
+            case "ARRIBA":
+                dy = -1;
+                break;
+            case "ABAJO":
+                dy = 1;
+                break;
+            case "IZQUIERDA":
+                dx = -1;
+                break;
+            case "DERECHA":
+                dx = 1;
+                break;
+            default:
+                System.out.println("Dirección desconocida: " + direccion);
+                return;
+        }
+        moverJugador(jugador, dx, dy);
+    }
+
     public void accionJugador(Jugador jugador, Enemigo enemigo, MotorJuego motor) {
         System.out.println("Jugador intenta una accion contra el enemigo.");
         if (jugador.isViva() && enemigo.isViva()) {

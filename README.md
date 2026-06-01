@@ -197,7 +197,9 @@ Nota: Mermaid tiene soporte limitado para diagramas de casos de uso; arriba se h
 
 ## 7. Sección de uso de IA
 
-Este proyecto no integra modelos de IA de aprendizaje automático; sin embargo, la arquitectura admite mejoras con componentes de IA en los siguientes puntos:
+Este proyecto no integra modelos de IA de aprendizaje automático; sin embargo, la arquitectura admite mejoras con componentes de IA en muchos puntos que se hayan hecho prompts:
+- El diseño entero ha sido guiado por ChatGPT generando la esstructura del codigo de clases, y también ha ayudado mucho en el manejo del terminar para hacer comits, merge y push de contenidos a Github
+- El diagrama de UML modelo de Mermaid ha sido facilitado por ChatGPT también
 
 - Comportamiento de enemigos: reemplazar la lógica heurística actual por una política aprendida (p. ej. redes neuronales) que reciba el estado local y devuelva acciones. Se puede exponer una interfaz `decidirAccion()` en `Enemigo` que consulte un modelo.
 - Planificación de rutas: sustituir la patrulla y persecución por A* o un planificador reforzado para escenarios con obstáculos.

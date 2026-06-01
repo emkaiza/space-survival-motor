@@ -34,8 +34,20 @@ public class MotorJuego {
 
     public void actualizar() {
         System.out.println("MotorJuego actualiza entidades...");
+        // Buscar jugador (si existe)
+        Jugador jugador = null;
+        for (EntidadVideojuego e : entidades) {
+            if (e instanceof Jugador) {
+                jugador = (Jugador) e;
+                break;
+            }
+        }
+
         for (EntidadVideojuego entidad : entidades) {
-            if (entidad.isViva()) {
+            if (!entidad.isViva()) continue;
+            if (entidad instanceof Enemigo) {
+                ((Enemigo) entidad).actualizarComportamiento(jugador);
+            } else {
                 entidad.actualizar();
             }
         }
@@ -49,7 +61,7 @@ public class MotorJuego {
     }
 
     // Método simple que detecta colisión entre rectángulos de entidades
-    // y aplica daño si el jugador colisiona con un enemigo.
+    // e informa al enemigo para que cambie a estado ATACAR (no aplica daño aquí).
     public void detectarColision() {
         for (int i = 0; i < entidades.size(); i++) {
             EntidadVideojuego a = entidades.get(i);
@@ -63,25 +75,13 @@ public class MotorJuego {
                         && a.getY() < b.getY() + b.getAlto()
                         && a.getY() + a.getAlto() > b.getY();
 
-                String key = a.getNombre().compareTo(b.getNombre()) <= 0 ? a.getNombre() + "|" + b.getNombre() : b.getNombre() + "|" + a.getNombre();
                 if (colision) {
-                    if (!colisionesPrevias.contains(key)) {
-                        // primera detección de esta colisión continua -> aplicar daño
-                        if (a instanceof Jugador && b instanceof Enemigo) {
-                            System.out.println("Colisión detectada: " + a.getNombre() + " (Jugador) con " + b.getNombre() + " (Enemigo)");
-                            a.recibirDano(1);
-                            System.out.println("Vida del jugador " + a.getNombre() + " ahora: " + a.getVida());
-                        } else if (b instanceof Jugador && a instanceof Enemigo) {
-                            System.out.println("Colisión detectada: " + b.getNombre() + " (Jugador) con " + a.getNombre() + " (Enemigo)");
-                            b.recibirDano(1);
-                            System.out.println("Vida del jugador " + b.getNombre() + " ahora: " + b.getVida());
-                        }
-                        colisionesPrevias.add(key);
-                    }
-                } else {
-                    // si antes estaban colisionando y ahora ya no, eliminar del set
-                    if (colisionesPrevias.contains(key)) {
-                        colisionesPrevias.remove(key);
+                    if (a instanceof Jugador && b instanceof Enemigo) {
+                        System.out.println("Colisión detectada: " + a.getNombre() + " (Jugador) con " + b.getNombre() + " (Enemigo)");
+                        ((Enemigo) b).setEstado("ATACAR");
+                    } else if (b instanceof Jugador && a instanceof Enemigo) {
+                        System.out.println("Colisión detectada: " + b.getNombre() + " (Jugador) con " + a.getNombre() + " (Enemigo)");
+                        ((Enemigo) a).setEstado("ATACAR");
                     }
                 }
             }
